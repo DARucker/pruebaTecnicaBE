@@ -1,0 +1,16 @@
+
+services:
+
+  db-superheroes:
+    container_name: superheroes
+    image: mysql:8.0.33
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: superheroes
+      #MYSQL_USER: root
+      MYSQL_PASSWORD: 12345678
+      MYSQL_ROOT_PASSWORD: 12345678
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
