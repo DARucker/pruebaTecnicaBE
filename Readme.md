@@ -14,7 +14,8 @@ En este caso, he aplicado la versión LTS más utilizada de Java, es decir, la 1
 * Crear un súper héroe.
 * Modificar un súper héroe.
 * Eliminar un súper héroe.
-* Test unitarios de como mínimo un servicio: he realizado los test de la capa service
+* Test unitarios de como mínimo un servicio: 
+  * He realizado los test de la capa service
 
 ### Puntos a tener en cuenta:
 
@@ -27,3 +28,9 @@ En este caso, he aplicado la versión LTS más utilizada de Java, es decir, la 1
 
 * Gestión centralizada de excepciones.
   * Incluída en la carpeta exception 
+* Presentar la aplicación dockerizada.
+  * Se incluye docker-compose.yml con la dockerizacion de la base de datos.
+* Documentación de la API.
+  * Realizada mediante Swagger a través de http://localhost:8080/swagger-ui/index.html
+
+<img alt="img.png" height="600" src="img.png" width="950"/>

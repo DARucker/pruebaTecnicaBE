@@ -36,7 +36,12 @@ public class SuperHeroeServImpl implements ISuperHeroeService{
 
     @Override
     public List<Superheroe> findAll() {
-        return superheroeRepository.findAll();
+
+        List <Superheroe> listEncontrada = superheroeRepository.findAll();
+        if(listEncontrada.isEmpty()){
+            throw new ListaVaciaException("No hay superhéroes cargados en la base de datos");
+        }
+        return listEncontrada;
     }
 
     @Override
