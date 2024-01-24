@@ -33,4 +33,4 @@ En este caso, he aplicado la versión LTS más utilizada de Java, es decir, la 1
 * Documentación de la API.
   * Realizada mediante Swagger a través de http://localhost:8080/swagger-ui/index.html
 
-<img alt="img.png" height="600" src="img.png" width="950"/>
+![img.png](img.png)
