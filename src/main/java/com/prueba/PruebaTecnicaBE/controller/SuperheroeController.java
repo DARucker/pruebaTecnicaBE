@@ -1,6 +1,8 @@
 package com.prueba.PruebaTecnicaBE.controller;
 
+import com.prueba.PruebaTecnicaBE.Utiles.MedirDuracion;
 import com.prueba.PruebaTecnicaBE.entity.Superheroe;
+import com.prueba.PruebaTecnicaBE.repository.SuperheroeRepository;
 import com.prueba.PruebaTecnicaBE.service.ISuperHeroeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -8,6 +10,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +27,13 @@ public class SuperheroeController {
     @Autowired
     private ISuperHeroeService superHeroeService;
 
+    @Autowired
+    private SuperheroeRepository superheroeRepository;
 
     @Operation(summary= "Crear un superhéroe", description = "Permite crear un superheroe y lo inserta en la base de datos.")
     @ApiResponse(responseCode = "201", description = "El superhéroe ha sido creado correctamente", content = {@Content(mediaType = "application/json",
             schema = @Schema(implementation = Superheroe.class))})
+    @MedirDuracion
     @PostMapping("/create")
     public ResponseEntity<Superheroe> create (@RequestBody Superheroe superheroe){
         return ResponseEntity.status(201).body(superHeroeService.create(superheroe));
@@ -34,6 +43,7 @@ public class SuperheroeController {
     @ApiResponse(responseCode = "200", description = "El superhéroe ha sido encontrado", content = {@Content(mediaType = "application/json",
             schema = @Schema(implementation = Superheroe.class))})
     @ApiResponse(responseCode = "404", description = "No se encontró un superhéroe con el ID solicitado", content = @Content)
+    @MedirDuracion
     @GetMapping("/findById/{id}")
     public ResponseEntity<Superheroe> findById(@PathVariable("id") int id){
         Superheroe superheroeFound = superHeroeService.finById(id);
@@ -44,6 +54,7 @@ public class SuperheroeController {
     @ApiResponse(responseCode = "200", description = "Lista de superhéroes que cumplen con el criterio", content = {@Content(mediaType = "application/json",
             schema = @Schema(implementation = Superheroe.class))})
     @ApiResponse(responseCode = "404", description = "No se encontró ningún superhéroe", content = @Content)
+    @MedirDuracion
     @GetMapping("/findByName/{name}")
     public ResponseEntity<List<Superheroe>> findByName(@PathVariable("name") String name){
         List<Superheroe> listaObtenida = superHeroeService.findByName(name);
@@ -54,15 +65,23 @@ public class SuperheroeController {
     @ApiResponse(responseCode = "200", description = "Lista completa de superhéroes.", content = {@Content(mediaType = "application/json",
             schema = @Schema(implementation = Superheroe.class))})
     @ApiResponse(responseCode = "404", description = "No se encontró ningún superhéroe", content = @Content)
+    @MedirDuracion
     @GetMapping("/findAll")
-    public ResponseEntity<List<Superheroe>> findAll (){
-        return ResponseEntity.status(200).body(superHeroeService.findAll());
+    public ResponseEntity<Page<Superheroe>> findAll (@RequestParam(  defaultValue = "0") int pagina,
+                                                     @RequestParam(  defaultValue = "3") int cantidad
+                                                     ){
+    //@RequestParam(  defaultValue = "id") String Ordenado)
+        Pageable pageable = PageRequest.of(pagina, cantidad); //, Sort.by(Ordenado));
+        Page<Superheroe> listaSuperheroes = superheroeRepository.findAll(pageable);
+        return ResponseEntity.status(200).body(listaSuperheroes);
+        //return ResponseEntity.status(200).body(superHeroeService.findAll());
     }
 
     @Operation(summary= "Actualiza el nombre de un superhéroe", description = "Encuentra un superhéroe por su ID y le actualiza el nombre.")
     @ApiResponse(responseCode = "200", description = "Actualizado correctamente", content = {@Content(mediaType = "application/json",
             schema = @Schema(implementation = Superheroe.class))})
     @ApiResponse(responseCode = "404", description = "No se encontró ningún superhéroe con el ID solicitado", content = @Content)
+    @MedirDuracion
     @PutMapping ("/update")
     public ResponseEntity<Superheroe> update (@RequestBody Superheroe superheroe) {
         return ResponseEntity.status(200).body(superHeroeService.updateSuperheroe(superheroe));
@@ -72,6 +91,7 @@ public class SuperheroeController {
     @ApiResponse(responseCode = "200", description = "Eliminado correctamente", content = {@Content(mediaType = "application/json",
             schema = @Schema(implementation = Superheroe.class))})
     @ApiResponse(responseCode = "404", description = "No se encontró ningún superhéroe", content = @Content)
+    @MedirDuracion
     @DeleteMapping ("/delete/{id}")
     public String delete (@PathVariable ("id") int id) {
         superHeroeService.delete(id);

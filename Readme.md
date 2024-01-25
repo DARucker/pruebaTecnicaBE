@@ -28,10 +28,16 @@ En este caso, he aplicado la versión LTS más utilizada de Java, es decir, la 1
 
 * Test de integración
   * Realizado utilizando Testcontainer
+* Paginación:
+  * Se agregó la función de paginación en el método findAll. Acepta como parámetros: número de página y cantidad por página.
 * Gestión centralizada de excepciones.
   * Incluída en la carpeta exception 
 * Presentar la aplicación dockerizada.
   * Se incluye docker-compose.yml con la dockerizacion de la base de datos.
+* Implementar una anotación personalizada que sirva para medir cuánto tarda en ejecutarse una petición.
+  * Se creó la anotación @MedirDuracion dentro de la carpeta Utiles.
+  * Esta anotación muestra mediante un logger cuantos milisegundos tardó en ejecutarse una petición.
+  * Se agregó esta anotación en todos los métodos. Solo mide las respuestas exitosas.
 * Documentación de la API.
   * Realizada mediante Swagger a través de http://localhost:8080/swagger-ui/index.html
 
