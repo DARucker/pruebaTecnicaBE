@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: superheroes
-      #MYSQL_USER: root
+      MYSQL_USER: root
       MYSQL_PASSWORD: 12345678
       MYSQL_ROOT_PASSWORD: 12345678
     ports:
