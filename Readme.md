@@ -26,6 +26,8 @@ En este caso, he aplicado la versión LTS más utilizada de Java, es decir, la 1
  
 ### Puntos opcionales de mejora incluídos:
 
+* Test de integración
+  * Realizado utilizando Testcontainer
 * Gestión centralizada de excepciones.
   * Incluída en la carpeta exception 
 * Presentar la aplicación dockerizada.
