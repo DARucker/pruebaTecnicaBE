@@ -5,15 +5,16 @@ import com.prueba.PruebaTecnicaBE.exception.ListaVaciaException;
 import com.prueba.PruebaTecnicaBE.exception.SuperheroeNotFoundException;
 import com.prueba.PruebaTecnicaBE.repository.SuperheroeRepository;
 import com.prueba.PruebaTecnicaBE.service.SuperHeroeServImpl;
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -80,14 +81,18 @@ class SuperheroesServiceTest {
     @Order(4)
     @DisplayName("Find All")
     void WhenSaveTwoObjects_ThenFindAllSizeIs2(){
-        List<Superheroe> superheroeList = new ArrayList<>();
-        superheroeList.add(new Superheroe(1, "Batman"));
-        superheroeList.add(new Superheroe(1, "Superman"));
 
-        when(superHeroeService.findAll()).thenReturn(superheroeList);
-        int superHeroesCount = 2;
-        assertEquals(superHeroesCount, superheroeList.size());
+        Superheroe batman = new Superheroe(1, "Batman");
+        Pageable pageable = Pageable.unpaged();
+        Page<Superheroe> pageResult = new PageImpl<>(Collections.singletonList(batman));
 
+        when(superheroeRepository.findAll(pageable)).thenReturn(pageResult);
+        when(superheroeRepository.findAll()).thenReturn(Collections.singletonList(batman));
+
+        Page<Superheroe> result = superHeroeService.findAll(pageable);
+
+        verify(superheroeRepository, times(1)).findAll(pageable);
+        assertEquals(pageResult, result);
     }
 
     @Test

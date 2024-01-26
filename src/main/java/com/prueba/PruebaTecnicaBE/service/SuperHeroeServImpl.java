@@ -5,7 +5,12 @@ import com.prueba.PruebaTecnicaBE.exception.ListaVaciaException;
 import com.prueba.PruebaTecnicaBE.exception.SuperheroeNotFoundException;
 import com.prueba.PruebaTecnicaBE.repository.SuperheroeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,12 +40,19 @@ public class SuperHeroeServImpl implements ISuperHeroeService{
     }
 
     @Override
-    public List<Superheroe> findAll() {
+    public Page <Superheroe> findAll(Pageable pageable) {
 
-        List <Superheroe> listEncontrada = superheroeRepository.findAll();
+        Page <Superheroe> listEncontrada = superheroeRepository.findAll(pageable);
+        Long cantPagina = listEncontrada.getTotalElements();
+
         if(listEncontrada.isEmpty()){
-            throw new ListaVaciaException("No hay superhéroes cargados en la base de datos");
+            if(!superheroeRepository.findAll().isEmpty()){
+                throw new ListaVaciaException("La página solicitada no tiene datos");
+            } else {
+                throw new ListaVaciaException("No hay superhéroes cargados en la base de datos");
+            }
         }
+
         return listEncontrada;
     }
 

@@ -70,11 +70,10 @@ public class SuperheroeController {
     public ResponseEntity<Page<Superheroe>> findAll (@RequestParam(  defaultValue = "0") int pagina,
                                                      @RequestParam(  defaultValue = "3") int cantidad
                                                      ){
-    //@RequestParam(  defaultValue = "id") String Ordenado)
-        Pageable pageable = PageRequest.of(pagina, cantidad); //, Sort.by(Ordenado));
-        Page<Superheroe> listaSuperheroes = superheroeRepository.findAll(pageable);
+
+        Pageable pageable = PageRequest.of(pagina, cantidad);
+        Page<Superheroe> listaSuperheroes = superHeroeService.findAll(pageable);
         return ResponseEntity.status(200).body(listaSuperheroes);
-        //return ResponseEntity.status(200).body(superHeroeService.findAll());
     }
 
     @Operation(summary= "Actualiza el nombre de un superhéroe", description = "Encuentra un superhéroe por su ID y le actualiza el nombre.")
