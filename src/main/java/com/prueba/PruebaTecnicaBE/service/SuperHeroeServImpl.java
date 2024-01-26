@@ -5,6 +5,8 @@ import com.prueba.PruebaTecnicaBE.exception.ListaVaciaException;
 import com.prueba.PruebaTecnicaBE.exception.SuperheroeNotFoundException;
 import com.prueba.PruebaTecnicaBE.repository.SuperheroeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,7 @@ public class SuperHeroeServImpl implements ISuperHeroeService{
     @Autowired
     private SuperheroeRepository superheroeRepository;
     @Override
+    @CacheEvict(value = "superheroes", allEntries = true)
     public Superheroe create(Superheroe superheroe) {
 
         Superheroe superheroeToSave = new Superheroe();
@@ -40,6 +43,7 @@ public class SuperHeroeServImpl implements ISuperHeroeService{
     }
 
     @Override
+    @Cacheable("superheroes")
     public Page <Superheroe> findAll(Pageable pageable) {
 
         Page <Superheroe> listEncontrada = superheroeRepository.findAll(pageable);

@@ -38,6 +38,8 @@ En este caso, he aplicado la versión LTS más utilizada de Java, es decir, la 1
   * Se creó la anotación @MedirDuracion dentro de la carpeta Utiles.
   * Esta anotación muestra mediante un logger cuantos milisegundos tardó en ejecutarse una petición.
   * Se agregó esta anotación en todos los métodos. Solo mide las respuestas exitosas.
+* Poder cachear peticiones.
+  * Se agregó caché en findAll con borrado únicamente en el método create para comparar con los otros métodos que no cuentan con caché ni borrado. La duración se imprime en el trace con un INFO. 
 * Documentación de la API.
   * Realizada mediante Swagger a través de http://localhost:8080/swagger-ui/index.html
 
